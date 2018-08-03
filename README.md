@@ -21,14 +21,28 @@ Other features can be added as requested.
 
 # Dependencies
 
-This application was programmed using Python 3.6, and it also requires a special 
-module (curses) included in the dependencies folder. This module needs to be 
-installed in windows and was acquired from the following website: 
+This application supports Python 3+, and it also requires a special module 
+called **curses**. Download this module for the right platform from the following
+website:
 
 https://www.lfd.uci.edu/~gohlke/pythonlibs/#curses
 
-For Linux, in theory, curses is a default module so no extra steps should be required.
-However, this was not tested on my end.
+__For Linux, in theory, curses is a default module so no extra steps should be required.
+However, this was not tested on my end.__
+
+The application also needs **requests**, which can be installed by either of the
+following commands:
+
+```
+pip install requests
+```
+
+From the tornconsole root folder:
+```
+pip install -r requirements.txt
+```
+
+After these two basic requirements, you are set to go!
 
 # First time use
 
