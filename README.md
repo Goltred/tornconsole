@@ -27,8 +27,8 @@ website:
 
 https://www.lfd.uci.edu/~gohlke/pythonlibs/#curses
 
-__For Linux, in theory, curses is a default module so no extra steps should be required.
-However, this was not tested on my end.__
+*For Linux, in theory, curses is a default module so no extra steps should be required.
+However, this was not tested on my end.*
 
 The application also needs **requests**, which can be installed by either of the
 following commands:
