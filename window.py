@@ -93,10 +93,17 @@ class Window:
         if len(text) > max_x:
             #Shorten the text to fit the contents of the window and add ...
             text = "{}...".format(text[:max_x - 4])
-        if pos is None:
-            target_window.addstr(text, attributes)
-        else:
-            target_window.addstr(pos[0], pos[1], text, attributes)
 
-        if add_newline:
-            target_window.addstr("\n")
+        try:
+            if pos is None:
+                target_window.addstr(text, attributes)
+            else:
+                target_window.addstr(pos[0], pos[1], text, attributes)
+
+            if add_newline:
+                    target_window.addstr("\n")
+        except Exception as e:
+            #Chances are that this is trying to add a new line and going
+            #outside of the window geometry
+            if e.args[0] == 'addwstr() returned ERR':
+                pass
