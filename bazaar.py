@@ -41,9 +41,9 @@ class BazaarWindow(Window):
         self.items = []
         if self.main.user_response['bazaar'] is not None:
             for json_item in self.main.user_response['bazaar']:
-                if json_item['ID'] in self.main.settings.watched_items:
-                    item = BazaarItem(**json_item)
-                    self.items.append(item)
+                #if json_item['ID'] in self.main.settings.watched_items:
+                item = BazaarItem(**json_item)
+                self.items.append(item)
 
                 if len(self.items) == max_items:
                     break
