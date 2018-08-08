@@ -3,3 +3,6 @@
 .vs/
 *.pyc
 settings.ini
+
+#Pyinstaller exclusions
+build/
