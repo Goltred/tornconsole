@@ -10,15 +10,18 @@ class TornSettings():
     key = None
     refresh_interval = None
     watched_items = None
+    min_attack_respect = 3
 
     def __init__(self, *args, **kwargs):
-        for k, v in kwargs.items():
-            if hasattr(self, k):
-                if k == "watched_items":
-                    items = [int(i.strip()) for i in v.split(",")]
-                    v = items
+        for key, value in kwargs.items():
+            if hasattr(self, key):
+                if key == "watched_items":
+                    items = [i.strip() for i in value.split(",")]
+                    value = items
+                elif key == "min_attack_respect":
+                    value = float(value)
 
-                setattr(self, k, v)
+                setattr(self, key, value)
 
         #Validate that basic settings are present
         errors = []

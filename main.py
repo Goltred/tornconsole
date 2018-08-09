@@ -9,6 +9,7 @@ from window import Window
 from console import ConsoleWindow
 from settings import TornSettings, SettingsWindow
 from tornapi import TornAPI
+from torninfo import TornInfo
 
 class Main:
     """Main window class. Contains the main logic for the console application"""
@@ -150,7 +151,8 @@ class Main:
         curses.curs_set(0)
 
         #Set the color pairs used by the application
-        curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+        for color in COLOR_DEFS:
+            curses.init_pair(*color)
 
         self.settings = self.check_settings()
 
@@ -168,7 +170,7 @@ class Main:
             #Refresh windows
             #Update the user response
             self.user_response = self.tornapi.get_user(selections=user_selections)
-            self.torn_items = self.tornapi.get_torn(selections=torn_selections) 
+            self.torninfo = TornInfo(**self.tornapi.get_torn(selections=torn_selections))
             self.next_update = time.time() + int(self.settings.refresh_interval)
             while True:
                 if time.time() >= self.next_update:

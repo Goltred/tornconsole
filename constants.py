@@ -2,6 +2,7 @@
 Constants for the application
 """
 
+import curses
 from status import StatusWindow
 from travel import TravelWindow
 from bazaar import BazaarWindow
@@ -10,6 +11,19 @@ from update_status import UpdateStatusWindow
 from attacks import AttackWindow
 from notifications import NotificationsWindow
 from chain import ChainWindow
+
+class ColorPair(object):
+    index = None
+    foreground = None
+    background = None
+
+    def __init__(self, index, foreground, background):
+        self.index = index
+        self.foreground = foreground
+        self.background = background
+
+    def __iter__(self):
+        return iter([self.index, self.foreground, self.background])
 
 HOME_URL = "www.torn.com"
 
@@ -68,9 +82,17 @@ WINDOWS["update"] = {
     "y": LINES - 1, "x": 0
     }
 
+#Color definitions
+COLOR_GREEN = ColorPair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+COLOR_RED = ColorPair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+
+#Color definitions are processed based on the following list
+COLOR_DEFS = [COLOR_GREEN, COLOR_RED]
+
 #Console height, this will probably be deprecated
 CONSOLE_WINDOW_HEIGHT = 5
 
 #Endpoints
 USER_ENDPOINT = "https://api.torn.com/user"
 TORN_ENDPOINT = "https://api.torn.com/torn"
+MARKET_ENDPOINT = "https://api.torn.com/market"

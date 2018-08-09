@@ -4,6 +4,7 @@ Bazaar information related classes
 
 import curses
 import utility
+import constants
 from window import Window
 
 MAX_NAME_LENGTH = 10
@@ -32,6 +33,9 @@ class Attack:
                 if key == "defender_name":
                     if len(value) > MAX_NAME_LENGTH:
                         value = value[:10]
+                elif key == "respect_gain":
+                    value = float(value)
+
                 setattr(self, key, value)
 
     def __str__(self):
@@ -91,4 +95,8 @@ class AttackWindow(Window):
         self.new_line("", contents)
 
         for _, attack in self.attacks:
-            self.new_line(attack.__str__(), contents)
+            attributes = 0
+            if attack.respect_gain > self.main.settings.min_attack_respect:
+                attributes = curses.color_pair(constants.COLOR_GREEN.index)
+
+            self.new_line(attack.__str__(), contents, attributes = attributes)

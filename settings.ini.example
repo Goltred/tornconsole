@@ -1,3 +1,10 @@
 #BASE INFORMATION
 API_KEY = <Your API KEY here>
 REFRESH_INTERVAL = 5
+
+#Attack Settings
+MIN_ATTACK_RESPECT = 3
+
+#Items watched in the Market. Use the full name here as that is compared
+#against keys in the JSON response of the Torn API call
+WATCHED_ITEMS=Lion Plushie
