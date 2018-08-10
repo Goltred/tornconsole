@@ -9,6 +9,7 @@ from window import Window
 from console import ConsoleWindow
 from settings import TornSettings, SettingsWindow
 from tornapi import TornAPI
+from torninfo import TornInfo
 
 class Main:
     """Main window class. Contains the main logic for the console application"""
@@ -126,12 +127,7 @@ class Main:
                     key = l.split("=")[0].strip()
                     value = l.split("=")[1].strip()
 
-                    if "API_KEY" in key.upper():
-                        settings_dict["key"] = value
-                    elif "REFRESH_INTERVAL" in key.upper():
-                        settings_dict["refresh_interval"] = value
-                    elif "WATCHED_ITEMS" in key.upper():
-                        settings_dict["watched_items"] = value
+                    settings_dict[key.lower()] = value
 
             processed = True
         except IOError:
@@ -150,13 +146,14 @@ class Main:
         curses.curs_set(0)
 
         #Set the color pairs used by the application
-        curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+        for color in COLOR_DEFS:
+            curses.init_pair(*color)
 
         self.settings = self.check_settings()
 
         if self.settings is not None:
             #Create the tornapi object
-            self.tornapi = TornAPI(self.settings.key)
+            self.tornapi = TornAPI(self.settings.api_key)
 
             #Create the windows
             self.create_windows()
@@ -168,7 +165,7 @@ class Main:
             #Refresh windows
             #Update the user response
             self.user_response = self.tornapi.get_user(selections=user_selections)
-            self.torn_items = self.tornapi.get_torn(selections=torn_selections) 
+            self.torninfo = TornInfo(**self.tornapi.get_torn(selections=torn_selections))
             self.next_update = time.time() + int(self.settings.refresh_interval)
             while True:
                 if time.time() >= self.next_update:

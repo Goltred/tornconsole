@@ -5,6 +5,7 @@ character bars
 
 import curses
 import utility
+import constants
 from window import Window
 from statusbar import StatusBar
 
@@ -37,7 +38,7 @@ class StatusWindow(Window):
         self.new_line("{:6}: {}".format("Status", self.status[0]), contents)
 
         #Life
-        self.new_line(self.life.__str__(), contents, attributes=curses.color_pair(1))
+        self.new_line(self.life.__str__(), contents, attributes=curses.color_pair(constants.COLOR_GREEN.index))
 
         #Energy
         self.new_line(self.energy.__str__(), contents)

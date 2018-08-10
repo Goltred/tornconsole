@@ -52,6 +52,7 @@ class ChainWindow(Window):
                       attributes=curses.A_UNDERLINE | curses.A_BOLD
                       )
         self.new_line("", contents)
+
         if self.chain.cooldown > 0:
             #Chain is in cooldown. This has not been tested
             self.new_line(
