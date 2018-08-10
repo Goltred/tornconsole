@@ -11,6 +11,7 @@ class TornSettings():
     refresh_interval = None
     watched_items = None
     min_attack_respect = 3
+    market_refresh_interval = 60
 
     def __init__(self, *args, **kwargs):
         for key, value in kwargs.items():

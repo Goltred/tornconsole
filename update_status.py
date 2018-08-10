@@ -22,5 +22,12 @@ class UpdateStatusWindow(Window):
                 setattr(self, k, v)
 
         next_update = self.main.next_update - time.time()
+        user_calls = self.main.tornapi.user_calls
+        torn_calls = self.main.tornapi.torn_calls
+        market_calls = self.main.tornapi.market_calls
+        total = user_calls + torn_calls + market_calls
+
+        update_str = "Next Update in {:.0f}s".format(next_update)
+        calls_str = "Total Calls = {} ({} User, {} Market, {} Torn)".format(total, user_calls, market_calls, torn_calls)
         
-        self.new_line("Next Update in {:.0f}s".format(next_update), add_newline = False)
+        self.new_line("{} | {}".format(update_str, calls_str), add_newline = False)

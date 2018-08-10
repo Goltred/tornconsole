@@ -63,6 +63,7 @@ class MarketWindow(Window):
         if self.main.settings.watched_items:
             #Set the next update
             if self.market_update is None or self.market_update <= time.time():
+                self.items = []
                 #Update the information for each item
                 for name in self.main.settings.watched_items:
                     id = ""
@@ -101,7 +102,7 @@ class MarketWindow(Window):
                             self.items.append(market_item)
 
                 #Set the next_update value so that it refreshes in the next minute
-                self.market_update = time.time() + 60000
+                self.market_update = time.time() + int(self.main.settings.market_refresh_interval)
 
             #Display the items
             for item in self.items:

@@ -8,3 +8,8 @@ MIN_ATTACK_RESPECT = 3
 #Items watched in the Market. Use the full name here as that is compared
 #against keys in the JSON response of the Torn API call
 WATCHED_ITEMS=Lion Plushie
+
+#Seconds to wait before another market query. BE CAREFUL with this
+#since a low number + too many items in the watched items list above
+#can cause the API key to be blocked from querying the API
+MARKET_REFRESH_INTERVAL = 60
