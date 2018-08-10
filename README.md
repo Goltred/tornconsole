@@ -10,8 +10,10 @@ API KEY, allowing to see the following:
 * Travel status
 * Current Chain status
 * Bazaar information
+* Watched Market Items
 * Initiated attacks information
 * Notifications window
+* Status Bar
 
 Timers on different windows should countdown to provide real-time information back 
 to the user, and a status bar on the bottom of the screen displays when the next
@@ -80,13 +82,15 @@ currently performs:
 
 * At launch, 2 API calls are performed: 1 for the "User" endpoint required to fetch all
 information for the multiple windows, and 1 for the "Torn" endpoint required to fetch
-Torn information (e.g. Item names)
+Torn information (e.g. Item names).
+If the Market Watch feature is being used, one API call per Item will be performed also.
 
-* At each refresh interval, only the "User" enpoint is queried again to update the
-information on the screen.
+* At each refresh interval, the "User" enpoint is queried again to update the
+information on the screen. The Market Watched Items are refresh based on their own interval
+(default 60 seconds). 
 
-** Currently, the "Torn" endpoint response is not being used but is there since it will
-be needed for future functionality.
+**It is advised to be careful with the Market Watched Items interval since too many calls 
+to the API might cause Torn to block further requests from the API key **
 
 # Application "Windows"
 
@@ -135,10 +139,19 @@ is displayed indicating so.
 The intent of this window is to work closely with the Market window so that the
 player can validate the prices of their bazaar against the current market value.
 
-## Market Window
+## Watched Items Window
 
-Not implemented yed, this window will probably display the price of a list of
-particular items and their value.
+The Watched Items windows displays a quick view of the prices of the watched
+items in either the points market (when using Point), or the bazaar and item
+market when querying about any other item.
+Items to watch are setup in the settings.ini file, in a comma-separated line
+under the name of WATCHED_ITEMS.
+Duplicate entries are skipped.
+
+```
+#Watched Items settings
+WATCHED_ITEMS=Point, Lion Plushie
+```
 
 ## Initiated Attacks Window
 
@@ -162,3 +175,6 @@ or messages. A maximum of 10 notifications are displayed.
 
 The Status bar at the bottom of the window displays the amount of time left until
 the next Torn API call.
+It also displays the total number of calls performed to the Torn API. This is mostly
+used to validate that the application is not making too many requests to the API thus
+allowing the user to validate that their refresh settings are ok.
