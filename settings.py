@@ -7,7 +7,7 @@ from window import Window
 from shutil import copyfile
 
 class TornSettings():
-    key = None
+    api_key = None
     refresh_interval = None
     watched_items = None
     min_attack_respect = 3
@@ -27,7 +27,7 @@ class TornSettings():
         #Validate that basic settings are present
         errors = []
         base_msg = "{} could not be found in the settings file"
-        if self.key is None:
+        if self.api_key is None:
             errors.append(base_msg.format("API KEY"))
 
         if self.refresh_interval is None:

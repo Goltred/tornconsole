@@ -127,12 +127,7 @@ class Main:
                     key = l.split("=")[0].strip()
                     value = l.split("=")[1].strip()
 
-                    if "API_KEY" in key.upper():
-                        settings_dict["key"] = value
-                    elif "REFRESH_INTERVAL" in key.upper():
-                        settings_dict["refresh_interval"] = value
-                    elif "WATCHED_ITEMS" in key.upper():
-                        settings_dict["watched_items"] = value
+                    settings_dict[key.lower()] = value
 
             processed = True
         except IOError:
@@ -158,7 +153,7 @@ class Main:
 
         if self.settings is not None:
             #Create the tornapi object
-            self.tornapi = TornAPI(self.settings.key)
+            self.tornapi = TornAPI(self.settings.api_key)
 
             #Create the windows
             self.create_windows()
