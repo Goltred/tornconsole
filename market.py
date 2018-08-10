@@ -3,7 +3,9 @@ Bazaar information related classes
 """
 
 import curses
+import time
 from window import Window
+from torninfo import TornItem
 
 class MarketBase(object):
     def __init__(self, *args, **kwargs):
@@ -12,21 +14,42 @@ class MarketBase(object):
                 setattr(self, k, v)
 
 class MarketItem(MarketBase):
-    pass
+    id = -1
+    name = None
+    cost = None
+    quantity = None
+    market = ""
 
-class MarketPoint(MarketBase):
-    cost = -1
-    quantity = -1
+class MarketPoint(MarketItem):
     total_cost = -1
 
-class Market(object):
+class Market(MarketBase):
+    name = None
     pointsmarket = None
     bazaar = None
     itemmarket = None
 
 class MarketWindow(Window):
     items = []
-    next_update = None
+    market_update = None
+
+    def validate_duplicate_items(self, name):
+        for item in self.items:
+            if name.lower() == item.name.lower():
+                #The item is alraedy there
+                return False
+
+        return True
+
+    def get_cheapest(self, name, id, market_name, market):
+        cheapest = sorted(market.items(), key=lambda x: x[1]["cost"])[0]
+
+        #Add the missing values to the API response
+        cheapest[1]["name"] = name
+        cheapest[1]["id"] = id
+        cheapest[1]["market"] = market_name
+
+        return cheapest[1]
 
     def populate(self):
         #Draw the border and create the inside window
@@ -38,26 +61,52 @@ class MarketWindow(Window):
         self.new_line("", contents)
 
         if self.main.settings.watched_items:
-            items = self.main.settings.watched_items
+            #Set the next update
+            if self.market_update is None or self.market_update <= time.time():
+                #Update the information for each item
+                for name in self.main.settings.watched_items:
+                    id = ""
 
-            for i in items:
-                if i != "point":
-                    #Get the item information from the torninfo object
-                    item = self.main.torninfo.get_item_by_name(i)
-                    if item:
-                        pass
-                        #Query the Torn API with the item id
-                        #self.main.tornapi.get_market(item.id)
-                else:
-                    #Get the first item from the pointsmarket key
-                    selections=["pointsmarket"]
-                    #self.pointsmarket = self.main.tornapi.get_market(selections = selections)
-                
-                #Get the cheapest between bazaars and market
+                    if self.validate_duplicate_items(name):
+                        if name.lower() != "point":
+                            selections = ["bazaar", "itemmarket"]
+                            #Get the item information first
+                            item = self.main.torninfo.get_item_by_name(name)
+                            id = item.id
+                        else:
+                            selections = ["pointsmarket"]
 
-                item_line = "{} ({})".format(item.name, item.id)
+                        #Now get the information from the market
+                        market_response = self.main.tornapi.get_market(id, selections = selections)
+                        market_info = Market(**market_response)
 
-                
+                        #Get the cheapest item
+                        market_item = None
+                        if name.lower() != "point":
+                            #Check the bazaars and create an object
+                            cheapest_bazaar = self.get_cheapest(name, item.id, "Bazaar", market_info.bazaar)
+                            cheapest_bazaar_item = MarketItem(**cheapest_bazaar)
+
+                            #Check the itemmarket and create an object
+                            cheapest_market = self.get_cheapest(name, item.id, "Market", market_info.itemmarket)
+                            cheapest_market_item = MarketItem(**cheapest_market)
+
+                            market_item = cheapest_bazaar_item if cheapest_bazaar_item.cost <= cheapest_market_item.cost else cheapest_market_item
+                        else:
+                            #Sort the results and get the cheapest
+                            cheapest = self.get_cheapest("Point", -1, "Market", market_info.pointsmarket)
+                            market_item = MarketPoint(**cheapest)
+
+                        if market_item:
+                            self.items.append(market_item)
+
+                #Set the next_update value so that it refreshes in the next minute
+                self.market_update = time.time() + 60000
+
+            #Display the items
+            for item in self.items:
+                item_line = "[{}] {:20}: ${}".format(item.market, item.name, item.cost)
+
                 self.new_line(item_line, contents)
         else:
             self.new_line("No items configured in settings.ini", contents)
