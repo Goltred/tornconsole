@@ -23,7 +23,7 @@ class BazaarItem:
                 setattr(self, key, value)
 
     def __str__(self):
-        return "{} x {}: ${:,.0f}".format(
+        return "{} x {:21}: ${:,.0f}".format(
             self.quantity,
             self.name,
             self.price,
