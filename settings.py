@@ -12,6 +12,7 @@ class TornSettings():
     watched_items = None
     min_attack_respect = 3
     market_refresh_interval = 60
+    bazaar_watched_items = False
 
     def __init__(self, *args, **kwargs):
         for key, value in kwargs.items():
@@ -21,6 +22,8 @@ class TornSettings():
                     value = items
                 elif key == "min_attack_respect":
                     value = float(value)
+                elif key == "bazaar_watched_items":
+                    value = True if value.lower() in [1, "yes", "true"] else False
 
                 setattr(self, key, value)
 

@@ -13,3 +13,7 @@ WATCHED_ITEMS=Lion Plushie
 #since a low number + too many items in the watched items list above
 #can cause the API key to be blocked from querying the API
 MARKET_REFRESH_INTERVAL = 60
+
+#Set the Bazaar window to display only the items set in 
+#the WATCHED_ITEMS value in this file
+BAZAAR_WATCHED_ITEMS=False

@@ -117,8 +117,8 @@ class MarketWindow(Window):
                 self.market_update = time.time() + int(self.main.settings.market_refresh_interval)
 
             #Display the items
-            for item in self.items:
-                item_line = "[{}] {:20}: ${}".format(item.market, item.name, item.cost)
+            for item in sorted(self.items, key=lambda x: x.name):
+                item_line = "[{}] {:21}: ${:,.0f}".format(item.market, item.name, item.cost)
 
                 self.new_line(item_line, contents)
         else:
