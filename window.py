@@ -39,6 +39,12 @@ class Window:
         self.populate()
         self.window.refresh()
 
+    def title(self, text, dest_window, attributes = None):
+        if attributes is None:
+            attributes=curses.A_BOLD | curses.A_UNDERLINE
+
+        self.new_line(text, dest_window, attributes=attributes)
+
     def populate(self):
         """
         Main method intended to hold the information that should be

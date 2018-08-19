@@ -11,6 +11,7 @@ from update_status import UpdateStatusWindow
 from attacks import AttackWindow
 from notifications import NotificationsWindow
 from chain import ChainWindow
+from console import ConsoleWindow, CommandWindow
 
 class ColorPair(object):
     index = None
@@ -90,7 +91,18 @@ COLOR_RED = ColorPair(2, curses.COLOR_RED, curses.COLOR_BLACK)
 COLOR_DEFS = [COLOR_GREEN, COLOR_RED]
 
 #Console height, this will probably be deprecated
-CONSOLE_WINDOW_HEIGHT = 5
+after_notifications = WINDOWS["notifications"]["y"] + WINDOWS["notifications"]["h"]
+CONSOLE_WINDOW = {
+    "type": ConsoleWindow,
+    "h":LINES - after_notifications - 4, "w": WINDOWS["attacks"]["x"],
+    "y":after_notifications, "x":0
+    }
+
+COMMAND_WINDOW = {
+    "type": CommandWindow,
+    "h": 3, "w": CONSOLE_WINDOW["w"],
+    "y": CONSOLE_WINDOW["y"] + CONSOLE_WINDOW["h"], "x": 0
+    }
 
 #Endpoints
 USER_ENDPOINT = "https://api.torn.com/user"

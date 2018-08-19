@@ -10,6 +10,19 @@ class ConsoleWindow(Window):
     """
     curses window that acts as a terminal console
     """
+    history = []
+
+    def populate(self):
+        self.window.border()
+        contents = self.window.derwin(1, 1)
+        self.title("Console", contents)
+        for line in self.history[:3]:
+            self.new_line(line, contents)
+
+class CommandWindow(Window):
+    """
+    curses window that acts as a terminal console
+    """
     prompt = ">"
     command = ""
     history = []

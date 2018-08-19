@@ -84,6 +84,12 @@ class Main:
         for w, d in WINDOWS.items():
             self.create_window(w, **d)
 
+        #Create the console window
+        self.console = self.create_window("console", **CONSOLE_WINDOW)
+        
+        #Add the command window
+        self.command = self.create_window("command", **COMMAND_WINDOW)
+
         ##Create the status window
         #self.create_window("status", StatusWindow, *STATUS_WINDOW_DEF)
 

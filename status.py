@@ -32,7 +32,7 @@ class StatusWindow(Window):
         #Create a new window for the character bars
         contents = self.window.derwin(1,1)
 
-        self.new_line("Status Window", contents, attributes=curses.A_UNDERLINE | curses.A_BOLD)
+        self.title("Status Window", contents)
         self.new_line("", contents)
         self.new_line("{:6}: {}[{}]".format("Name", self.name, self.player_id), contents)
         self.new_line("{:6}: {}".format("Status", self.status[0]), contents)
